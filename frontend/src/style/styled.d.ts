@@ -1,5 +1,5 @@
 import 'styled-components';
-import { ColorKey, HeadingSize, ThemeName } from './theme';
+import { ColorKey, HeadingSize, ButtonSize, ButtonScheme, ThemeName } from './theme';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -10,5 +10,20 @@ declare module 'styled-components' {
         fontSize: string;
       };
     };
+    button: {
+      [key in ButtonSize]: {
+        fontSize: string;
+        padding: string;
+      };
+    };
+    buttonScheme: {
+      [key in ButtonScheme]: {
+        color: string;
+        backgroundColor: string;
+      };
+    };
+    borderRadius: {
+      default: string;
+    }
   }
 }
