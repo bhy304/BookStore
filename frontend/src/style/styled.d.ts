@@ -1,5 +1,12 @@
 import 'styled-components';
-import { ColorKey, HeadingSize, ButtonSize, ButtonScheme, ThemeName } from './theme';
+import {
+  ColorKey,
+  HeadingSize,
+  ButtonSize,
+  ButtonScheme,
+  ThemeName,
+  LayoutWidth,
+} from './theme';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -24,6 +31,11 @@ declare module 'styled-components' {
     };
     borderRadius: {
       default: string;
-    }
+    };
+    layout: {
+      width: {
+        [key in LayoutWidth]: string;
+      };
+    };
   }
 }
