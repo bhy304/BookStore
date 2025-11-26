@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { PiBooks } from 'react-icons/pi';
 import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const CATEGORY = [
   { id: null, name: '전체' },
@@ -13,22 +14,24 @@ function Header() {
   return (
     <HeaderStyle>
       <h1 className="logo">
-        <PiBooks />
-        <p>
-          <span>BOOK</span>STORE
-        </p>
+        <Link to="/">
+          <PiBooks />
+          <p>
+            <span>BOOK</span>STORE
+          </p>
+        </Link>
       </h1>
       <nav className="category">
         <ul>
           {CATEGORY.map((item) => (
             <li key={item.id}>
-              <a
-                href={
+              <Link
+                to={
                   item.id === null ? '/books' : `/books?category_id=${item.id}`
                 }
               >
                 {item.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -36,16 +39,16 @@ function Header() {
       <nav className="auth">
         <ul>
           <li>
-            <a href="/login">
+            <Link to="/login">
               <FaSignInAlt />
               로그인
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/register">
+            <Link to="/register">
               <FaRegUser />
               회원가입
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
@@ -65,14 +68,17 @@ const HeaderStyle = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.color.background};
 
   .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
 
-    p {
-      font-size: 1.5rem;
-      span {
-        color: ${({ theme }) => theme.color.primary};
+      p {
+        font-size: 1.5rem;
+        span {
+          color: ${({ theme }) => theme.color.primary};
+        }
       }
     }
     /* img {
