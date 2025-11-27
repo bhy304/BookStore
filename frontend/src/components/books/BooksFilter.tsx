@@ -1,15 +1,36 @@
 import styled from 'styled-components';
+import { useCategory } from '../../hooks/useCategory';
+import Button from '../common/Button';
 
-interface Props {}
+function BooksFilter() {
+  const category = useCategory();
 
-function BooksFilter(props: Props) {
   return (
     <BooksFilterStyle>
-      <h1>BooksFilter</h1>
+      <div className="category">
+        {category.map((item) => (
+          <Button size="medium" scheme="normal" key={item.category_id}>
+            {item.category_name}
+          </Button>
+        ))}
+      </div>
+      <div className="new">
+        <Button size="medium" scheme="normal">
+          신간
+        </Button>
+      </div>
     </BooksFilterStyle>
   );
 }
 
-const BooksFilterStyle = styled.div``;
+const BooksFilterStyle = styled.div`
+  display: flex;
+  gap: 24px;
+
+  .category {
+    display: flex;
+    gap: 8px;
+  }
+`;
 
 export default BooksFilter;
