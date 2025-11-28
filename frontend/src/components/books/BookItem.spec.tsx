@@ -18,7 +18,7 @@ const dummyBook: Book = {
   contents: '목차',
   price: 20000,
   likes: 5,
-  pubDate: '2025-10-15',
+  pub_date: '2025-10-15',
 };
 
 describe('BookItem Component Test', () => {

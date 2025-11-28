@@ -3,16 +3,17 @@ import styled from 'styled-components';
 import { useBook } from '../hooks/useBook';
 import { getImgSrc } from '../utils/image';
 import Title from '../components/common/Title';
-import type { BookDetail } from '../models/book.model';
+import type { BookDetail as BookDetailModel } from '../models/book.model';
 import { formatDate, formatNumber } from '../utils/format';
 import EllipsisBox from '../components/common/EllipsisBox';
 import LikeButton from '../components/book/LikeButton';
+import AddToCart from '../components/book/AddToCart';
 
 const bookInfoList = [
   {
     label: '카테고리',
     key: 'category_name',
-    filter: (book: BookDetail) => (
+    filter: (book: BookDetailModel) => (
       <Link to={`/books?category_id=${book.category_id}`}>
         {book.category_name}
       </Link>
@@ -24,14 +25,14 @@ const bookInfoList = [
   {
     label: '출간일',
     key: 'pub_date',
-    filter: (book: BookDetail) => {
+    filter: (book: BookDetailModel) => {
       return formatDate(book.pub_date);
     },
   },
   {
     label: '가격',
     key: 'price',
-    filter: (book: BookDetail) => {
+    filter: (book: BookDetailModel) => {
       return `${formatNumber(book.price)} 원`;
     },
   },
@@ -57,14 +58,18 @@ function BookDetail() {
           {bookInfoList.map(({ label, key, filter }) => (
             <dl key={label}>
               <dt>{label}</dt>
-              <dd>{filter ? filter(book) : book[key as keyof BookDetail]}</dd>
+              <dd>
+                {filter ? filter(book) : book[key as keyof BookDetailModel]}
+              </dd>
             </dl>
           ))}
           <p className="summary">{book.summary}</p>
           <div className="like">
             <LikeButton book={book} onClick={likeToggle} />
           </div>
-          <div className="add-cart">장바구니</div>
+          <div className="add-cart">
+            <AddToCart book={book} />
+          </div>
         </div>
       </header>
       <div className="content">

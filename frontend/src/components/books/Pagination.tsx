@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import type { Pagination } from '../../models/pagination.model';
+import type { Pagination as PaginationModel } from '../../models/pagination.model';
 import Button from '../common/Button';
 import { LIMIT } from '../../constants/pagination';
 import { useSearchParams } from 'react-router-dom';
 import { QUERYSTRING } from '../../constants/querystring';
 
 interface Props {
-  pagination: Pagination;
+  pagination: PaginationModel;
 }
 
 function Pagination({ pagination }: Props) {

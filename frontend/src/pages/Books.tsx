@@ -7,9 +7,7 @@ import Pagination from '../components/books/Pagination';
 import BooksViewSwitcher from '../components/books/BooksViewSwitcher';
 import { useBooks } from '../hooks/useBooks';
 
-interface Props {}
-
-function Books(props: Props) {
+function Books() {
   const { books, pagination, isEmpty } = useBooks();
 
   return (
