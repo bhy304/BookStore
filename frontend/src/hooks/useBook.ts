@@ -1,9 +1,34 @@
 import { useEffect, useState } from 'react';
 import type { BookDetail } from '../models/book.model';
 import { fetchBook } from '../api/books.api';
+import { likeBook, unlikeBook } from '../api/likes.api';
+import { useAuthStore } from '../store/authStore';
+import { useAlert } from './useAlert';
 
 export const useBook = (bookId: string | undefined) => {
   const [book, setBook] = useState<BookDetail | null>(null);
+  const { isLoggedIn } = useAuthStore();
+  const showAlert = useAlert();
+
+  const likeToggle = () => {
+    // 권한 확인
+    if (!isLoggedIn) {
+      showAlert('로그인이 필요합니다.');
+      return;
+    }
+
+    if (!book) return;
+
+    if (book.liked) {
+      unlikeBook(book.id).then(() => {
+        setBook({ ...book, liked: false, likes: book.likes - 1 });
+      });
+    } else {
+      likeBook(book.id).then(() => {
+        setBook({ ...book, liked: true, likes: book.likes + 1 }); // 낙관적 업데이트 : 불필요한 요청 제거, 화면에 like 요소가 업데이트 되는 것은 book 정보에서 상대적으로 마이너한 정보이기 때문에 낙관적 업데이트로 처리하는 경우가 굉장히 많다.
+      });
+    }
+  };
 
   useEffect(() => {
     if (!bookId) return;
@@ -13,5 +38,5 @@ export const useBook = (bookId: string | undefined) => {
     });
   }, [bookId]);
 
-  return { book };
+  return { book, likeToggle };
 };
