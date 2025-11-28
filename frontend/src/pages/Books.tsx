@@ -5,19 +5,22 @@ import BooksList from '../components/books/BooksList';
 import BooksEmpty from '../components/books/BooksEmpty';
 import Pagination from '../components/books/Pagination';
 import BooksViewSwitcher from '../components/books/BooksViewSwitcher';
+import { useBooks } from '../hooks/useBooks';
 
 interface Props {}
 
 function Books(props: Props) {
+  const { books, pagination, isEmpty } = useBooks();
+
   return (
     <>
       <Title size="large">도서 검색 결과</Title>
       <BooksStyle>
         <BooksFilter />
         <BooksViewSwitcher />
-        <BooksList />
-        <BooksEmpty />
-        <Pagination />
+        {!isEmpty && <BooksList books={books} />}
+        {isEmpty && <BooksEmpty />}
+        {!isEmpty && <Pagination />}
       </BooksStyle>
     </>
   );
