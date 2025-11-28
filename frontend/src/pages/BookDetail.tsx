@@ -5,6 +5,7 @@ import { getImgSrc } from '../utils/image';
 import Title from '../components/common/Title';
 import type { BookDetail } from '../models/book.model';
 import { formatDate, formatNumber } from '../utils/format';
+import EllipsisBox from '../components/common/EllipsisBox';
 
 const bookInfoList = [
   {
@@ -41,8 +42,6 @@ function BookDetail() {
 
   if (!book) return null; // early return
 
-  console.log('book', book);
-
   return (
     <BookDetailStyle>
       <header className="header">
@@ -65,7 +64,13 @@ function BookDetail() {
           <div className="add-cart">장바구니</div>
         </div>
       </header>
-      <div className="content"></div>
+      <div className="content">
+        <Title size="medium">상세 설명</Title>
+        <EllipsisBox lineLimit={4}>{book.detail}</EllipsisBox>
+
+        <Title size="medium">목차</Title>
+        <p className="index">{book.contents}</p>
+      </div>
     </BookDetailStyle>
   );
 }
@@ -104,6 +109,9 @@ const BookDetailStyle = styled.div`
         }
       }
     }
+  }
+
+  .content {
   }
 `;
 
