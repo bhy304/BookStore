@@ -2,5 +2,39 @@
   "prettier.semi": true,
   "prettier.singleQuote": true,
   "prettier.tabWidth": 2,
-  "prettier.printWidth": 80
+  "prettier.printWidth": 80,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.run": "onSave",
+  "eslint.format.enable": false,
+  "eslint.codeActionsOnSave.mode": "problems",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+  "eslint.workingDirectories": ["./frontend"],
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.eslintcache": true,
+    "**/.vite": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.eslintcache": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.vite/**": true,
+    "**/dist/**": true,
+    "**/.eslintcache": true
+  }
 }

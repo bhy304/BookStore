@@ -1,14 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Title from '../components/common/Title';
 import CartItem from '../components/cart/CartItem';
 import { useCart } from '../hooks/useCart';
 import Empty from '../components/common/Empty';
 import { FaShoppingCart } from 'react-icons/fa';
+import CartSummary from '../components/cart/CartSummary';
 
-interface Props {}
-
-function Cart(props: Props) {
+function Cart() {
   const { carts, isEmpty, deleteCartItem } = useCart();
 
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -24,6 +23,24 @@ function Cart(props: Props) {
   const handleItemDelete = (id: number) => {
     deleteCartItem(id);
   };
+
+  const totalQuantity = useMemo(() => {
+    return carts.reduce((acc, cart) => {
+      if (checkedItems.includes(cart.id)) {
+        return acc + cart.quantity;
+      }
+      return acc;
+    }, 0);
+  }, [carts, checkedItems]);
+
+  const totalPrice = useMemo(() => {
+    return carts.reduce((acc, cart) => {
+      if (checkedItems.includes(cart.id)) {
+        return acc + cart.price * cart.quantity;
+      }
+      return acc;
+    }, 0);
+  }, [carts, checkedItems]);
 
   return (
     <>
@@ -42,7 +59,12 @@ function Cart(props: Props) {
                 />
               ))}
             </div>
-            <div className='summary'>summary</div>
+            <div className='summary'>
+              <CartSummary
+                totalQuantity={totalQuantity}
+                totalPrice={totalPrice}
+              />
+            </div>
           </>
         )}
         {isEmpty && (
@@ -57,6 +79,22 @@ function Cart(props: Props) {
   );
 }
 
-const CartStyle = styled.div``;
+const CartStyle = styled.div`
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 24px 0 0 0;
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .summary {
+    display: flex;
+  }
+`;
 
 export default Cart;
