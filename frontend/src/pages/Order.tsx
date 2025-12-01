@@ -1,16 +1,129 @@
 import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import Title from '../components/common/Title';
+import { CartStyle } from './Cart';
+import CartSummary from '../components/cart/CartSummary';
+import Button from '../components/common/Button';
+import InputText from '../components/common/InputText';
+import { useForm } from 'react-hook-form';
+import type { Delivery, OrderSheet } from '../models/order.model';
 
-interface Props {}
-
-function Order(props: Props) {
-  const location = useLocation();
-  const orderDataFromCart = location.state;
-  console.log(orderDataFromCart);
-
-  return <OrderStyle></OrderStyle>;
+interface DeliveryForm extends Delivery {
+  addressDetail: string;
 }
 
-const OrderStyle = styled.div``;
+function Order() {
+  const location = useLocation();
+  const orderDataFromCart = location.state;
+  const { totalQuantity, totalPrice, mainBookTitle } = orderDataFromCart;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<DeliveryForm>();
+
+  const handlePay = (data: DeliveryForm) => {
+    console.log(data);
+    const orderSheet: OrderSheet = {
+      ...orderDataFromCart,
+      delivery: {
+        ...data,
+        address: `${data.address} ${data.addressDetail}`,
+      },
+    };
+    // TODO: 서버로 넘겨준다.
+    console.log(orderSheet);
+  };
+
+  return (
+    <>
+      <Title size='large'>주문서 작성 </Title>
+      <CartStyle>
+        <div className='content'>
+          <div className='order-info'>
+            <Title size='medium' color='text'>
+              배송지 정보
+            </Title>
+            <form className='delivery'>
+              <fieldset>
+                <label htmlFor='address'>주소</label>
+                <div className='input'>
+                  <InputText
+                    id='address'
+                    inputType='text'
+                    {...register('address', { required: true })}
+                  />
+                </div>
+                <Button size='medium' scheme='normal'>
+                  주소 찾기
+                </Button>
+              </fieldset>
+              {errors.address && (
+                <p className='error-text'>주소를 입력해 주세요.</p>
+              )}
+              <fieldset>
+                <label htmlFor='addressDetail'>상세 주소</label>
+                <div className='input'>
+                  <InputText
+                    id='addressDetail'
+                    inputType='text'
+                    {...register('addressDetail', { required: true })}
+                  />
+                </div>
+              </fieldset>
+              {errors.addressDetail && (
+                <p className='error-text'>상세 주소를 입력해 주세요.</p>
+              )}
+              <fieldset>
+                <label htmlFor='receiver'>수령인</label>
+                <div className='input'>
+                  <InputText
+                    id='receiver'
+                    inputType='text'
+                    {...register('receiver', { required: true })}
+                  />
+                </div>
+              </fieldset>
+              {errors.receiver && (
+                <p className='error-text'>수령인을 입력해 주세요.</p>
+              )}
+              <fieldset>
+                <label htmlFor='contact'>전화번호</label>
+                <div className='input'>
+                  <InputText
+                    id='contact'
+                    inputType='text'
+                    {...register('contact', { required: true })}
+                  />
+                </div>
+              </fieldset>
+              {errors.contact && (
+                <p className='error-text'>전화번호를 입력해 주세요.</p>
+              )}
+            </form>
+          </div>
+
+          <div className='order-info'>
+            <Title size='medium' color='text'>
+              주문 상품
+            </Title>
+            <strong>
+              {mainBookTitle} 등 총 {totalQuantity}권
+            </strong>
+          </div>
+        </div>
+        <div className='summary'>
+          <CartSummary totalQuantity={totalQuantity} totalPrice={totalPrice} />
+          <Button
+            size='large'
+            scheme='primary'
+            onClick={handleSubmit(handlePay)}>
+            결제하기
+          </Button>
+        </div>
+      </CartStyle>
+    </>
+  );
+}
 
 export default Order;
