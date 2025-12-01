@@ -22,3 +22,15 @@ export interface Delivery {
   receiver: string;
   contact: string;
 }
+
+export interface OrderDetailItem {
+  author: string;
+  book_id: number;
+  price: number;
+  quantity: number;
+  title: string;
+}
+
+export interface OrderListItem extends Order {
+  detail?: OrderDetailItem[];
+}
