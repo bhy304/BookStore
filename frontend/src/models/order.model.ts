@@ -13,7 +13,7 @@ export interface OrderSheet {
   items: number[];
   totalQuantity: number;
   totalPrice: number;
-  mainBookTitle: string;
+  firstBookTitle: string;
   delivery: Delivery;
 }
 

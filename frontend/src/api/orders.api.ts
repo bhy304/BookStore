@@ -1,0 +1,7 @@
+import type { OrderSheet } from '../models/order.model';
+import { httpClient } from './https';
+
+export const order = async (orderData: OrderSheet) => {
+  const response = await httpClient.post('/orders', orderData);
+  return response.data;
+};

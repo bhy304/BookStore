@@ -59,7 +59,7 @@ function Cart() {
       items: checkedItems,
       totalQuantity,
       totalPrice,
-      mainBookTitle: carts[0].title,
+      firstBookTitle: carts[0].title,
     };
 
     showConfirm('주문하시겠습니까?', () => {

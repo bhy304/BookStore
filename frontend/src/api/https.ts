@@ -11,11 +11,21 @@ export const createClient = (config?: AxiosRequestConfig) => {
     timeout: DEFAULT_TIMEOUT,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: getToken() ? getToken() : '',
     },
     withCredentials: true,
     ...config,
   });
+
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      const token = getToken();
+      if (token) {
+        config.headers.Authorization = token;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
 
   axiosInstance.interceptors.response.use(
     (response) => response,
@@ -27,7 +37,7 @@ export const createClient = (config?: AxiosRequestConfig) => {
         return;
       }
       return Promise.reject(error);
-    },
+    }
   );
 
   return axiosInstance;

@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Title from '../components/common/Title';
 import { CartStyle } from './Cart';
 import CartSummary from '../components/cart/CartSummary';
@@ -6,19 +6,25 @@ import Button from '../components/common/Button';
 import InputText from '../components/common/InputText';
 import { useForm } from 'react-hook-form';
 import type { Delivery, OrderSheet } from '../models/order.model';
+import FindAddressButton from '../components/order/FindAddressButton';
+import { order } from '../api/orders.api';
+import { useAlert } from '../hooks/useAlert';
 
 interface DeliveryForm extends Delivery {
   addressDetail: string;
 }
 
 function Order() {
+  const navigate = useNavigate();
   const location = useLocation();
   const orderDataFromCart = location.state;
-  const { totalQuantity, totalPrice, mainBookTitle } = orderDataFromCart;
+  const { totalQuantity, totalPrice, firstBookTitle } = orderDataFromCart;
+  const { showAlert, showConfirm } = useAlert();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<DeliveryForm>();
 
@@ -31,8 +37,13 @@ function Order() {
         address: `${data.address} ${data.addressDetail}`,
       },
     };
-    // TODO: 서버로 넘겨준다.
-    console.log(orderSheet);
+
+    showConfirm('주문을 진행하시겠습니까?', () => {
+      order(orderSheet).then(() => {
+        showAlert('주문이 처리되었습니다.');
+        navigate('/orderlist');
+      });
+    });
   };
 
   return (
@@ -54,9 +65,9 @@ function Order() {
                     {...register('address', { required: true })}
                   />
                 </div>
-                <Button size='medium' scheme='normal'>
-                  주소 찾기
-                </Button>
+                <FindAddressButton
+                  onCompleted={(address) => setValue('address', address)}
+                />
               </fieldset>
               {errors.address && (
                 <p className='error-text'>주소를 입력해 주세요.</p>
@@ -108,7 +119,7 @@ function Order() {
               주문 상품
             </Title>
             <strong>
-              {mainBookTitle} 등 총 {totalQuantity}권
+              {firstBookTitle} 등 총 {totalQuantity}권
             </strong>
           </div>
         </div>
