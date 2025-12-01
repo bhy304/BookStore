@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import type { Cart } from '../models/cart.model';
-import { fetchCart } from '../api/carts.api';
+import { deleteCart, fetchCart } from '../api/carts.api';
 
 export const useCart = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
   const [isEmpty, setIsEmpty] = useState(true);
+
+  const deleteCartItem = (id: number) => {
+    deleteCart(id).then(() => {
+      setCarts(carts.filter((cart) => cart.id !== id)); // 낙관적 업데이트
+    });
+  };
 
   useEffect(() => {
     fetchCart().then((carts) => {
@@ -13,5 +19,5 @@ export const useCart = () => {
     });
   }, []);
 
-  return { carts, isEmpty };
+  return { carts, isEmpty, deleteCartItem };
 };
