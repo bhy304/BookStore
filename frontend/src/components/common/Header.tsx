@@ -2,23 +2,24 @@ import { styled } from 'styled-components';
 import { PiBooks } from 'react-icons/pi';
 import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useCategory } from '../../hooks/useCategory';
-import { useAuthStore } from '../../store/authStore';
+import { useCategory } from '@/hooks/useCategory';
+import { useAuth } from '@/hooks/useAuth';
 
 function Header() {
   const category = useCategory();
-  const { isLoggedIn, storeLogout } = useAuthStore();
+  const { isLoggedIn, storeLogout } = useAuth();
+
   return (
     <HeaderStyle>
-      <h1 className="logo">
-        <Link to="/">
+      <h1 className='logo'>
+        <Link to='/'>
           <PiBooks />
           <p>
             <span>BOOK</span>STORE
           </p>
         </Link>
       </h1>
-      <nav className="category">
+      <nav className='category'>
         <ul>
           {category.map((item) => (
             <li key={item.category_id}>
@@ -27,23 +28,22 @@ function Header() {
                   item.category_id === null
                     ? '/books'
                     : `/books?category_id=${item.category_id}`
-                }
-              >
+                }>
                 {item.category_name}
               </Link>
             </li>
           ))}
         </ul>
       </nav>
-      <nav className="auth">
+      <nav className='auth'>
         <ul>
           {isLoggedIn ? (
             <>
               <li>
-                <Link to="/cart">장바구니</Link>
+                <Link to='/cart'>장바구니</Link>
               </li>
               <li>
-                <Link to="/order">주문 내역</Link>
+                <Link to='/order'>주문 내역</Link>
               </li>
               <li>
                 <button onClick={storeLogout}>로그아웃</button>
@@ -52,13 +52,13 @@ function Header() {
           ) : (
             <>
               <li>
-                <Link to="/login">
+                <Link to='/login'>
                   <FaSignInAlt />
                   로그인
                 </Link>
               </li>
               <li>
-                <Link to="/signup">
+                <Link to='/signup'>
                   <FaRegUser />
                   회원가입
                 </Link>
