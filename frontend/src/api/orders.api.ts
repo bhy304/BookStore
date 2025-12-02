@@ -1,19 +1,19 @@
+import type { AxiosRequestConfig } from 'axios';
+import { BaseAPI } from './https';
 import type { Order, OrderDetailItem, OrderSheet } from '../models/order.model';
-import { httpClient } from './https';
 
-export const order = async (orderData: OrderSheet) => {
-  const response = await httpClient.post<Order>('/orders', orderData);
-  return response.data;
-};
+class OrderAPI extends BaseAPI {
+  async order(orderData: OrderSheet): Promise<OrderSheet> {
+    return this.post<OrderSheet>('/orders', orderData);
+  }
 
-export const fetchOrders = async () => {
-  const response = await httpClient.get<Order[]>('/orders');
-  return response.data;
-};
+  async fetchOrders(config?: AxiosRequestConfig): Promise<Order[]> {
+    return this.get<Order[]>('/orders', config);
+  }
 
-export const fetchOrder = async (orderId: number) => {
-  const response = await httpClient.get<OrderDetailItem[]>(
-    `/orders/${orderId}`
-  );
-  return response.data;
-};
+  async fetchOrder(orderId: number): Promise<OrderDetailItem[]> {
+    return this.get<OrderDetailItem[]>(`/orders/${orderId}`);
+  }
+}
+
+export const orderAPI = new OrderAPI();

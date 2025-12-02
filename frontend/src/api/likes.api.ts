@@ -1,13 +1,19 @@
-import { httpClient } from './https';
+import { BaseAPI } from './https';
 
-export const likeBook = async (bookId: number) => {
-  const response = await httpClient.post(`/likes/${bookId}`);
+interface LikeResponse {
+  id: number;
+  book_id: number;
+  user_id: number;
+}
 
-  return response.data;
-};
+class LikesAPI extends BaseAPI {
+  async likeBook(bookId: number): Promise<LikeResponse> {
+    return this.post<LikeResponse>(`/likes/${bookId}`);
+  }
 
-export const unlikeBook = async (bookId: number) => {
-  const response = await httpClient.delete(`/likes/${bookId}`);
+  async unlikeBook(bookId: number): Promise<void> {
+    return this.delete<void>(`/likes/${bookId}`);
+  }
+}
 
-  return response.data;
-};
+export const likesAPI = new LikesAPI();

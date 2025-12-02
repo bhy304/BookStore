@@ -1,14 +1,14 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import Title from '../components/common/Title';
+import Title from '@/components/common/Title';
 import { CartStyle } from './Cart';
-import CartSummary from '../components/cart/CartSummary';
-import Button from '../components/common/Button';
-import InputText from '../components/common/InputText';
+import CartSummary from '@/components/cart/CartSummary';
+import Button from '@/components/common/Button';
+import InputText from '@/components/common/InputText';
 import { useForm } from 'react-hook-form';
-import type { Delivery, OrderSheet } from '../models/order.model';
-import FindAddressButton from '../components/order/FindAddressButton';
-import { order } from '../api/orders.api';
-import { useAlert } from '../hooks/useAlert';
+import type { Delivery, OrderSheet } from '@/models/order.model';
+import FindAddressButton from '@/components/order/FindAddressButton';
+import { orderAPI } from '@/api/orders.api';
+import { useAlert } from '@/hooks/useAlert';
 
 interface DeliveryForm extends Delivery {
   addressDetail: string;
@@ -39,7 +39,7 @@ function Order() {
     };
 
     showConfirm('주문을 진행하시겠습니까?', () => {
-      order(orderSheet).then(() => {
+      orderAPI.order(orderSheet).then(() => {
         showAlert('주문이 처리되었습니다.');
         navigate('/orderlist');
       });

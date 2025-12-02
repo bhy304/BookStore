@@ -1,19 +1,19 @@
+import { cartsAPI } from '@/api/carts.api';
 import { useEffect, useState } from 'react';
-import type { Cart } from '../models/cart.model';
-import { deleteCart, fetchCart } from '../api/carts.api';
+import type { Cart } from '@/models/cart.model';
 
 export const useCart = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
   const [isEmpty, setIsEmpty] = useState(true);
 
   const deleteCartItem = (id: number) => {
-    deleteCart(id).then(() => {
+    cartsAPI.deleteCart(id).then(() => {
       setCarts(carts.filter((cart) => cart.id !== id)); // 낙관적 업데이트
     });
   };
 
   useEffect(() => {
-    fetchCart().then((carts) => {
+    cartsAPI.fetchCart().then((carts) => {
       setCarts(carts);
       setIsEmpty(carts.length === 0);
     });

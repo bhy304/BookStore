@@ -1,13 +1,13 @@
+import { orderAPI } from '@/api/orders.api';
 import { useEffect, useState } from 'react';
-import { fetchOrder, fetchOrders } from '../api/orders.api';
-import type { OrderListItem } from '../models/order.model';
+import type { OrderListItem } from '@/models/order.model';
 
 export const useOrders = () => {
   const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchOrders().then((orders) => {
+    orderAPI.fetchOrders().then((orders) => {
       setOrders(orders);
     });
   }, []);
@@ -18,7 +18,7 @@ export const useOrders = () => {
       return;
     }
 
-    fetchOrder(orderId).then((orderDetail) => {
+    orderAPI.fetchOrder(orderId).then((orderDetail) => {
       setSelectedItemId(orderId);
       setOrders(
         orders.map((order) => {

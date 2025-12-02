@@ -1,34 +1,30 @@
-import { httpClient } from './https';
-import type { SignupProps } from '../pages/Signup';
-import type { ResetPasswordProps } from '../pages/ResetPassword';
-import type { LoginProps } from '../pages/Login';
+import { BaseAPI } from './https';
+import type { SignupProps } from '@/pages/Signup';
+import type { ResetPasswordProps } from '@/pages/ResetPassword';
+import type { LoginProps } from '@/pages/Login';
 
-interface LoginResponse {
+interface Response {
   token: string;
 }
 
-export const signup = async (data: SignupProps) => {
-  const response = await httpClient.post('/users/join', data);
+class AuthAPI extends BaseAPI {
+  async signup(data: SignupProps): Promise<Response> {
+    return this.post<Response>('/users/join', data);
+  }
 
-  return response.data;
-};
+  async resetRequest(data: ResetPasswordProps): Promise<void> {
+    return this.post<void>('/users/reset', {
+      email: data.email,
+    });
+  }
 
-export const resetRequest = async (data: ResetPasswordProps) => {
-  const response = await httpClient.post('/users/reset', {
-    email: data.email,
-  });
+  async resetPassword(data: ResetPasswordProps): Promise<void> {
+    return this.put<void>('/users/reset', data);
+  }
 
-  return response.data;
-};
+  async login(data: LoginProps): Promise<Response> {
+    return this.post<Response>('/users/login', data);
+  }
+}
 
-export const resetPassword = async (data: ResetPasswordProps) => {
-  const response = await httpClient.put('/users/reset', data);
-
-  return response.data;
-};
-
-export const login = async (data: LoginProps) => {
-  const response = await httpClient.post<LoginResponse>('/users/login', data);
-
-  return response.data;
-};
+export const authAPI = new AuthAPI();

@@ -1,22 +1,29 @@
 import type { Cart } from '../models/cart.model';
-import { httpClient } from './https';
+import { BaseAPI } from './https';
 
 interface AddCartParams {
   book_id: number;
   quantity: number;
 }
 
-export const addCart = async (params: AddCartParams) => {
-  const response = await httpClient.post('/carts', params);
-  return response.data;
-};
+interface AddCartResponse {
+  id: number;
+  book_id: number;
+  quantity: number;
+}
 
-export const fetchCart = async () => {
-  const response = await httpClient.get<Cart[]>('/carts');
-  return response.data;
-};
+class CartsAPI extends BaseAPI {
+  async addCart(params: AddCartParams): Promise<AddCartResponse> {
+    return this.post<AddCartResponse>('/carts', params);
+  }
 
-export const deleteCart = async (cartId: number) => {
-  const response = await httpClient.delete(`/carts/${cartId}`);
-  return response.data;
-};
+  async fetchCart(): Promise<Cart[]> {
+    return this.get<Cart[]>('/carts');
+  }
+
+  async deleteCart(cartId: number): Promise<void> {
+    return this.delete<void>(`/carts/${cartId}`);
+  }
+}
+
+export const cartsAPI = new CartsAPI();

@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
-import Title from '../components/common/Title';
-import InputText from '../components/common/InputText';
-import Button from '../components/common/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../api/auth.api';
-import { useAlert } from '../hooks/useAlert';
+import { authAPI } from '@/api/auth.api';
+import { useAlert } from '@/hooks/useAlert';
 import { SignupStyle } from './Signup';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '@/store/authStore';
+import Title from '@/components/common/Title';
+import InputText from '@/components/common/InputText';
+import Button from '@/components/common/Button';
 
 export interface LoginProps {
   email: string;
@@ -26,7 +26,7 @@ function Login() {
   } = useForm<LoginProps>();
 
   const onSubmit = (data: LoginProps) => {
-    login(data).then(
+    authAPI.login(data).then(
       (res) => {
         // 상태 변화
         storeLogin(res.token);

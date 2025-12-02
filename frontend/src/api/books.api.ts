@@ -1,6 +1,6 @@
+import { BaseAPI } from './https';
 import type { BookDetail, Book } from '../models/book.model';
 import type { Pagination } from '../models/pagination.model';
-import { httpClient } from './https';
 
 interface FetchBooksParams {
   category_id?: number;
@@ -14,26 +14,14 @@ interface FetchBooksResponse {
   pagination: Pagination;
 }
 
-export const fetchBooks = async (params: FetchBooksParams) => {
-  try {
-    const response = await httpClient.get<FetchBooksResponse>('/books', {
-      params,
-    });
-
-    return response.data;
-  } catch (error) {
-    return {
-      books: [],
-      pagination: {
-        currentPage: 1,
-        totalCount: 0,
-      },
-    };
+class BooksAPI extends BaseAPI {
+  async fetchBooks(params: FetchBooksParams): Promise<FetchBooksResponse> {
+    return this.get<FetchBooksResponse>('/books', { params });
   }
-};
 
-export const fetchBook = async (bookId: string) => {
-  const response = await httpClient.get<BookDetail>(`/books/${bookId}`);
+  async fetchBook(bookId: string): Promise<BookDetail> {
+    return this.get<BookDetail>(`/books/${bookId}`);
+  }
+}
 
-  return response.data;
-};
+export const booksAPI = new BooksAPI();

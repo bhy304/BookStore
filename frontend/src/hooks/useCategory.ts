@@ -1,8 +1,8 @@
+import { categoryAPI } from './../api/category.api';
 import { useEffect, useState, useMemo } from 'react';
-import type { Category } from '../models/category.model';
-import { fetchCategory } from '../api/category.api';
 import { useLocation } from 'react-router-dom';
-import { QUERYSTRING } from '../constants/querystring';
+import type { Category } from '@/models/category.model';
+import { QUERYSTRING } from '@/constants/querystring';
 
 export const useCategory = () => {
   const location = useLocation();
@@ -10,7 +10,7 @@ export const useCategory = () => {
 
   // 초기 데이터 로드 (한 번만)
   useEffect(() => {
-    fetchCategory().then((data) => {
+    categoryAPI.fetchCategory().then((data) => {
       if (data) {
         setCategories(data);
       }
