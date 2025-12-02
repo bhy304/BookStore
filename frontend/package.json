@@ -12,6 +12,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.11",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.13.2",
     "dayjs": "^1.11.19",

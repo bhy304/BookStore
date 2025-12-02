@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { BookStoreThemeProvider } from './components/context/ThemeContext';
 import Layout from './components/layout/Layout';
 import ThemeSwitcher from './components/header/ThemeSwitcher';
@@ -12,6 +13,7 @@ import BookDetail from './pages/BookDetail';
 import Cart from './pages/Cart';
 import Order from './pages/Order';
 import OrderList from './pages/OrderList';
+import { queryClient } from './api/queryClient';
 
 const routeList = [
   {
@@ -65,10 +67,12 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <BookStoreThemeProvider>
-      <ThemeSwitcher />
-      <RouterProvider router={router} />
-    </BookStoreThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <BookStoreThemeProvider>
+        <ThemeSwitcher />
+        <RouterProvider router={router} />
+      </BookStoreThemeProvider>
+    </QueryClientProvider>
   );
 }
 
