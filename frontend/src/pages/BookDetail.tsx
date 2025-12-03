@@ -40,18 +40,20 @@ const bookInfoList = [
 
 function BookDetail() {
   const { bookId } = useParams();
-  const { book, likeToggle } = useBook(bookId);
+  const { book, likeToggle, reviews } = useBook(bookId);
+
+  console.log(reviews);
 
   if (!book) return null; // early return
 
   return (
     <BookDetailStyle>
-      <header className="header">
-        <div className="img">
+      <header className='header'>
+        <div className='img'>
           <img src={getImgSrc(book.img)} alt={book.title} />
         </div>
-        <div className="info">
-          <Title size="large" color="text">
+        <div className='info'>
+          <Title size='large' color='text'>
             {book.title}
           </Title>
 
@@ -63,21 +65,21 @@ function BookDetail() {
               </dd>
             </dl>
           ))}
-          <p className="summary">{book.summary}</p>
-          <div className="like">
+          <p className='summary'>{book.summary}</p>
+          <div className='like'>
             <LikeButton book={book} onClick={likeToggle} />
           </div>
-          <div className="add-cart">
+          <div className='add-cart'>
             <AddToCart book={book} />
           </div>
         </div>
       </header>
-      <div className="content">
-        <Title size="medium">상세 설명</Title>
+      <div className='content'>
+        <Title size='medium'>상세 설명</Title>
         <EllipsisBox lineLimit={4}>{book.detail}</EllipsisBox>
 
-        <Title size="medium">목차</Title>
-        <p className="index">{book.contents}</p>
+        <Title size='medium'>목차</Title>
+        <p className='index'>{book.contents}</p>
       </div>
     </BookDetailStyle>
   );
