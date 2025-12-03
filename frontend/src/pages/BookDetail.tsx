@@ -8,15 +8,14 @@ import { formatDate, formatNumber } from '../utils/format';
 import EllipsisBox from '../components/common/EllipsisBox';
 import LikeButton from '../components/book/LikeButton';
 import AddToCart from '../components/book/AddToCart';
+import BookReview from '@/components/book/BookReview';
 
 const bookInfoList = [
   {
     label: '카테고리',
     key: 'category_name',
     filter: (book: BookDetailModel) => (
-      <Link to={`/books?category_id=${book.category_id}`}>
-        {book.category_name}
-      </Link>
+      <Link to={`/books?category_id=${book.category_id}`}>{book.category_name}</Link>
     ),
   },
   { label: '포맷', key: 'form' },
@@ -42,8 +41,6 @@ function BookDetail() {
   const { bookId } = useParams();
   const { book, likeToggle, reviews } = useBook(bookId);
 
-  console.log(reviews);
-
   if (!book) return null; // early return
 
   return (
@@ -60,9 +57,7 @@ function BookDetail() {
           {bookInfoList.map(({ label, key, filter }) => (
             <dl key={label}>
               <dt>{label}</dt>
-              <dd>
-                {filter ? filter(book) : book[key as keyof BookDetailModel]}
-              </dd>
+              <dd>{filter ? filter(book) : book[key as keyof BookDetailModel]}</dd>
             </dl>
           ))}
           <p className='summary'>{book.summary}</p>
@@ -80,6 +75,9 @@ function BookDetail() {
 
         <Title size='medium'>목차</Title>
         <p className='index'>{book.contents}</p>
+
+        <Title size='medium'>리뷰</Title>
+        <BookReview reviews={reviews} />
       </div>
     </BookDetailStyle>
   );
