@@ -1,9 +1,11 @@
 import { styled } from 'styled-components';
 import { PiBooks } from 'react-icons/pi';
-import { FaSignInAlt, FaRegUser } from 'react-icons/fa';
+import { FaSignInAlt, FaRegUser, FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useCategory } from '@/hooks/useCategory';
 import { useAuth } from '@/hooks/useAuth';
+import Dropdown from './Dropdown';
+import ThemeSwitcher from '../header/ThemeSwitcher';
 
 function Header() {
   const category = useCategory();
@@ -25,9 +27,7 @@ function Header() {
             <li key={item.category_id}>
               <Link
                 to={
-                  item.category_id === null
-                    ? '/books'
-                    : `/books?category_id=${item.category_id}`
+                  item.category_id === null ? '/books' : `/books?category_id=${item.category_id}`
                 }>
                 {item.category_name}
               </Link>
@@ -36,9 +36,9 @@ function Header() {
         </ul>
       </nav>
       <nav className='auth'>
-        <ul>
+        <Dropdown toggleButton={<FaUserCircle />}>
           {isLoggedIn ? (
-            <>
+            <ul>
               <li>
                 <Link to='/cart'>장바구니</Link>
               </li>
@@ -48,9 +48,9 @@ function Header() {
               <li>
                 <button onClick={storeLogout}>로그아웃</button>
               </li>
-            </>
+            </ul>
           ) : (
-            <>
+            <ul>
               <li>
                 <Link to='/login'>
                   <FaSignInAlt />
@@ -63,9 +63,10 @@ function Header() {
                   회원가입
                 </Link>
               </li>
-            </>
+            </ul>
           )}
-        </ul>
+        </Dropdown>
+        <ThemeSwitcher />
       </nav>
     </HeaderStyle>
   );
@@ -122,19 +123,25 @@ const HeaderStyle = styled.header`
   }
 
   .auth {
+    display: flex;
+
     ul {
       display: flex;
-      flex-direction: row;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 16px;
+      width: 100px;
+      margin: 0;
 
       li {
         a,
         button {
+          width: 100%;
           font-size: 1rem;
           font-weight: 600;
           text-decoration: none;
           display: flex;
+          justify-content: center;
           align-items: center;
           line-height: 1;
           background: none;
