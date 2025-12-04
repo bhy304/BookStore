@@ -1,7 +1,7 @@
 import { useToastStore, type ToastItem } from '@/store/toastStore';
 import styled from 'styled-components';
 import { FaPlus, FaBan, FaInfoCircle } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTimeout } from '@/hooks/useTimeout';
 
 export const TOAST_REMOVE_DELAY = 3000;
@@ -20,14 +20,6 @@ function Toast({ id, message, type }: ToastItem) {
       removeToast(id);
     }
   };
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     handleRemoveToast();
-  //   }, TOAST_REMOVE_DELAY);
-
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   useTimeout(() => {
     setIsFadingOut(true);
