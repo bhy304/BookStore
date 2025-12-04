@@ -1,9 +1,17 @@
 import { BaseAPI } from './https';
-import type { BookReviewItem } from '@/models/book.model';
+import type { BookReviewItem, BookReviewItemWrite } from '@/models/book.model';
+
+interface AddBookReviewResponse {
+  message: string;
+}
 
 class ReviewsAPI extends BaseAPI {
   async fetchBookReview(bookId: string): Promise<BookReviewItem[]> {
     return this.get<BookReviewItem[]>(`/reviews/${bookId}`);
+  }
+
+  async addBookReview(bookId: string, data: BookReviewItemWrite) {
+    return this.post<AddBookReviewResponse>(`/reviews/${bookId}`, data);
   }
 }
 

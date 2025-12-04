@@ -2,7 +2,7 @@ import { cartsAPI } from './../api/carts.api';
 import { useEffect, useState } from 'react';
 import { booksAPI } from '@/api/books.api';
 import { likesAPI } from '@/api/likes.api';
-import type { BookReviewItem, BookDetail } from '@/models/book.model';
+import type { BookReviewItem, BookDetail, BookReviewItemWrite } from '@/models/book.model';
 import { useAuthStore } from '@/store/authStore';
 import { useAlert } from './useAlert';
 import { reviewsAPI } from '@/api/review.api';
@@ -51,6 +51,17 @@ export const useBook = (bookId: string | undefined) => {
       });
   };
 
+  const addReview = (data: BookReviewItemWrite) => {
+    if (!book) return;
+
+    reviewsAPI.addBookReview(book.id.toString(), data).then((res) => {
+      showAlert(res?.message);
+      // reviewsAPI.fetchBookReview(book.id.toString()).then((reviews) => {
+      //   setReviews(reviews);
+      // });
+    });
+  };
+
   useEffect(() => {
     if (!bookId) return;
 
@@ -63,5 +74,5 @@ export const useBook = (bookId: string | undefined) => {
     });
   }, [bookId]);
 
-  return { book, likeToggle, addToCart, cartAdded, reviews };
+  return { book, likeToggle, addToCart, cartAdded, reviews, addReview };
 };
