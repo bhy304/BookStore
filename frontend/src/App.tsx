@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { BookStoreThemeProvider } from './components/context/ThemeContext';
 import Layout from './components/layout/Layout';
-import ThemeSwitcher from './components/header/ThemeSwitcher';
 import Home from './pages/Home';
 import Error from './components/common/Error';
 import Signup from './pages/Signup';
@@ -14,6 +13,7 @@ import Cart from './pages/Cart';
 import Order from './pages/Order';
 import OrderList from './pages/OrderList';
 import { queryClient } from './api/queryClient';
+import ToastContainer from './components/common/toast/ToastContainer';
 
 const routeList = [
   {
@@ -70,6 +70,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BookStoreThemeProvider>
         <RouterProvider router={router} />
+        <ToastContainer />
       </BookStoreThemeProvider>
     </QueryClientProvider>
   );
