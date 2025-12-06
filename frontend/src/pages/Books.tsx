@@ -1,17 +1,32 @@
+import { useCallback } from 'react';
 import styled from 'styled-components';
 import Title from '@/components/common/Title';
 import BooksFilter from '@/components/books/BooksFilter';
 import BooksList from '@/components/books/BooksList';
 import BooksEmpty from '@/components/books/BooksEmpty';
-import Pagination from '@/components/books/Pagination';
 import BooksViewSwitcher from '@/components/books/BooksViewSwitcher';
 import Loading from '@/components/common/Loading';
-import { useBooksInifinite } from '@/hooks/useBooksInfinite';
 import Button from '@/components/common/Button';
+import { useBooksInifinite } from '@/hooks/useBooksInfinite';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 function Books() {
   const { books, pagination, isEmpty, isBooksLoading, hasNextPage, fetchNextPage } =
     useBooksInifinite();
+
+  const loadMore = useCallback(() => {
+    if (!hasNextPage) return;
+    fetchNextPage();
+  }, [hasNextPage, fetchNextPage]);
+
+  const moreRef = useIntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        loadMore();
+      }
+    },
+    { threshold: 0.1 } // 요소가 10% 보여질 때 감지하도록 설정
+  );
 
   if (isEmpty) {
     return <BooksEmpty />;
@@ -31,7 +46,7 @@ function Books() {
         </div>
         <BooksList books={books} />
         {/* <Pagination pagination={pagination} /> */}
-        <div className='more'>
+        <div className='more' ref={moreRef}>
           <Button
             size='medium'
             scheme='normal'
