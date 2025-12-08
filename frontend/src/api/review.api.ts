@@ -7,11 +7,15 @@ interface AddBookReviewResponse {
 
 class ReviewsAPI extends BaseAPI {
   async fetchBookReview(bookId: string): Promise<BookReviewItem[]> {
-    return this.get<BookReviewItem[]>(`/reviews/${bookId}`);
+    return await this.get<BookReviewItem[]>(`/reviews/${bookId}`);
   }
 
   async addBookReview(bookId: string, data: BookReviewItemWrite) {
     return this.post<AddBookReviewResponse>(`/reviews/${bookId}`, data);
+  }
+
+  async fetchReviewAll(): Promise<BookReviewItem[]> {
+    return await this.get<BookReviewItem[]>('/reviews');
   }
 }
 

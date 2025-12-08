@@ -26,3 +26,9 @@ export const addReview = http.post('http://localhost:8888/reviews/:bookId', () =
     }
   );
 });
+
+export const reviewForMain = http.get('http://localhost:8888/reviews', () => {
+  return HttpResponse.json(mockReviewData, {
+    status: 200,
+  });
+});

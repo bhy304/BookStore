@@ -1,20 +1,22 @@
-import Title from '../components/common/Title';
-import Button from '../components/common/Button';
-import InputText from '../components/common/InputText';
+import MainReview from '@/components/main/MainReview';
+import { useMain } from '@/hooks/useMain';
+import styled from 'styled-components';
 
 function Home() {
+  const { reviews } = useMain();
   return (
-    <>
-      <Title size="medium" color="background">
-        제목 테스트
-      </Title>
-      <Button size="large" scheme="normal">
-        버튼 테스트
-      </Button>
-      <InputText placeholder="여기에 입력하세요." />
-      <div>home</div>
-    </>
+    <HomeStyle>
+      <div>
+        {/* 배너 */}
+        {/* 베스트셀러 */}
+        {/* 신간 */}
+        {/* 리뷰 */}
+        <MainReview reviews={reviews} />
+      </div>
+    </HomeStyle>
   );
 }
+
+const HomeStyle = styled.div``;
 
 export default Home;
