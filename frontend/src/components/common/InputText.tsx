@@ -1,3 +1,4 @@
+import React from 'react';
 import { forwardRef, type ForwardedRef } from 'react';
 import { styled } from 'styled-components';
 
@@ -7,10 +8,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const InputText = forwardRef(
-  (
-    { placeholder, inputType, onChange, ...props }: Props,
-    ref: ForwardedRef<HTMLInputElement>,
-  ) => {
+  ({ placeholder, inputType, onChange, ...props }: Props, ref: ForwardedRef<HTMLInputElement>) => {
     return (
       <StyledInputText
         {...props}
@@ -20,7 +18,7 @@ const InputText = forwardRef(
         onChange={onChange}
       />
     );
-  },
+  }
 );
 
 const StyledInputText = styled.input<Props>`
