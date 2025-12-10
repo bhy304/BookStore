@@ -6,6 +6,7 @@ import { booksAPI } from '@/api/books.api';
 export const useMain = () => {
   const [reviews, setReviews] = useState<BookReviewItem[]>([]);
   const [newBooks, setNewBooks] = useState<Book[]>([]);
+  const [bestBooks, setBestBooks] = useState<Book[]>([]);
 
   useEffect(() => {
     reviewsAPI.fetchReviewAll().then((reviews) => {
@@ -22,7 +23,11 @@ export const useMain = () => {
       .then(({ books }) => {
         setNewBooks(books);
       });
+
+    booksAPI.fetchBestBooks().then((books) => {
+      setBestBooks(books);
+    });
   }, []);
 
-  return { reviews, newBooks };
+  return { reviews, newBooks, bestBooks };
 };

@@ -69,6 +69,9 @@ export const useBook = (bookId: string | undefined) => {
   useEffect(() => {
     if (!bookId) return;
 
+    const bookIdNum = Number(bookId);
+    if (isNaN(bookIdNum) || bookIdNum <= 0) return;
+
     booksAPI.fetchBook(bookId).then((book) => {
       setBook(book);
     });

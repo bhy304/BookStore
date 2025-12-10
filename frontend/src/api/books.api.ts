@@ -22,6 +22,10 @@ class BooksAPI extends BaseAPI {
   async fetchBook(bookId: string): Promise<BookDetail> {
     return this.get<BookDetail>(`/books/${bookId}`);
   }
+
+  async fetchBestBooks(): Promise<Book[]> {
+    return await this.get<Book[]>('/books/best');
+  }
 }
 
 export const booksAPI = new BooksAPI();

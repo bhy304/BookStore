@@ -46,6 +46,13 @@ function BookDetail() {
 
   const [isImgOpen, setIsImgOpen] = useState(false);
 
+  // Validate bookId
+  const isValidBookId = bookId && !isNaN(Number(bookId)) && Number(bookId) > 0;
+
+  if (!isValidBookId) {
+    return <div>Invalid book ID</div>;
+  }
+
   if (!book) return null; // early return
 
   return (
