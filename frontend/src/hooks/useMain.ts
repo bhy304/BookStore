@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { reviewsAPI } from '@/api/review.api';
-import type { Book, BookReviewItem } from '@/models/book.model';
 import { booksAPI } from '@/api/books.api';
+import { bannerAPI } from '@/api/banner.api';
+import type { Book, BookReviewItem } from '@/models/book.model';
+import type { Banner } from '@/models/banner.model';
 
 export const useMain = () => {
   const [reviews, setReviews] = useState<BookReviewItem[]>([]);
   const [newBooks, setNewBooks] = useState<Book[]>([]);
   const [bestBooks, setBestBooks] = useState<Book[]>([]);
+  const [banners, setBanners] = useState<Banner[]>([]);
 
   useEffect(() => {
     reviewsAPI.fetchReviewAll().then((reviews) => {
@@ -27,7 +30,11 @@ export const useMain = () => {
     booksAPI.fetchBestBooks().then((books) => {
       setBestBooks(books);
     });
+
+    bannerAPI.fetchBanners().then((banners) => {
+      setBanners(banners);
+    });
   }, []);
 
-  return { reviews, newBooks, bestBooks };
+  return { reviews, newBooks, bestBooks, banners };
 };
